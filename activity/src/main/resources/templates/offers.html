@@ -1,0 +1,53 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Offers</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet"
+	th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}" />
+<script th:src="@{/webjars/jquery/3.1.1/jquery.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}"></script>
+</head>
+<body>
+	<div class="container">
+		<h2>
+			Offers of Activity <span th:text="${activity.name}">Tracking</span> of <span th:text="${activity.nameProvider}">eXtreme</span>
+		</h2>
+		<a class="btn btn-default pull-right" th:href="@{/providers/{codeProvider}/activities(codeProvider=${activity.codeProvider})}">Activity</a>
+		<br/>
+		<h3>Create Offer</h3>
+		<p class="text-danger" th:text="${error}">Error</p>
+		<form class="form-inline" th:action="@{/providers/{codeProvider}/activities/{codeActivity}/offers(codeProvider=${activity.codeProvider},codeActivity=${activity.code})}" th:object="${offer}" method="post">
+	 		<label>Begin: </label> <input class="form-control input-sm" type="date" th:field="*{begin}" /> 
+	 		<label>End: </label> <input class="form-control input-sm" type="date" th:field="*{end}" /> 
+			<label>Amount: </label> <input class="form-control input-sm" type="number" step="0.01" min="0.01" max="1000" th:field="*{amount}" /> 
+			<input class="btn btn-primary btn-sm" type="submit" value="Submit" />
+		</form>
+		<br/>
+		<h3>Clients</h3>
+ 		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Begin</th>
+ 					<th>End</th>
+ 					<th>Amount</th>
+                    <th>Capacity</th>
+                    <th>Vacancies</th>
+ 					<th>Bookings</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="offer: ${activity.offers}">
+					<td th:text="${offer.begin}">12/12/2017</td>
+ 					<td th:text="${offer.end}">15/12/2107</td>
+                    <td th:text="${offer.amount}">34.67</td>
+                    <td th:text="${offer.capacity}">20</td>
+                    <td th:text="${offer.getAvailable()}">2</td>
+				 	<td><a
+						th:href="@{/providers/{codeProvider}/activities/{codeActivity}/offers/{externalId}/bookings(codeProvider=${offer.codeProvider},codeActivity=${offer.codeActivity}, externalId=${offer.externalId})}">Bookings</a></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>

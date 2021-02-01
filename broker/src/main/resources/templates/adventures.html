@@ -1,0 +1,102 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Adventures</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+    <link rel="stylesheet"
+          th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}"/>
+
+    <script th:src="@{/webjars/jquery/3.1.1/jquery.min.js}"></script>
+    <script th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}"></script>
+</head>
+<body>
+<div class="container">
+    <h2>
+        Adventures of Client NIF(<span th:text="${client.nif}">12343545</span>),
+        IBAN(<span th:text="${client.iban}">12343545</span>),
+        Age(<span th:text="${client.age}">45</span>)
+        DrivingLicense(<span th:text="${client.drivingLicense}">12343545</span>)
+    </h2>
+    <a class="btn btn-default pull-right"
+       th:href="@{/brokers/{code}/clients(code=${client.brokerCode})}">Clients</a>
+    <br/>
+    <h3>Create Adventure</h3>
+    <p class="text-danger" th:text="${error}">Error</p>
+    <form class="form-inline"
+          th:action="@{/brokers/{brokerCode}/clients/{clientNif}/adventures(brokerCode=${client.brokerCode},clientNif=${client.nif})}"
+          th:object="${adventure}" method="post">
+        <label>Begin: </label> <input class="form-control input-sm"
+                                      type="date" th:field="*{begin}"/> <label>End: </label> <input
+            class="form-control input-sm" type="date" th:field="*{end}"/> <label>Margin:
+    </label> <input class="form-control input-sm" type="number" step="0.01"
+                    min="0.0" max="1.0" th:field="*{margin}"/>
+
+    <label>Rent Vehicle: </label> <select
+				class="form-control" th:field="*{rentVehicle}">
+				<option
+					th:each="rentVehicle : ${T(pt.ulisboa.tecnico.softeng.broker.domain.Adventure.RentVehicle).values()}"
+					th:value="${rentVehicle}" th:text="${rentVehicle}"></option>
+            </select>
+
+    <label>Book Room: </label> <select
+				class="form-control" type="select" th:field="*{bookRoom}">
+				<option
+					th:each="bookRoom : ${T(pt.ulisboa.tecnico.softeng.broker.domain.Adventure.BookRoom).values()}"
+					th:value="${bookRoom}" th:text="${bookRoom}"></option>
+            </select>
+    <input class="btn btn-primary input-sm" type="submit" value="Submit"/>
+    </form>
+    <br/>
+    <h3>Adventures</h3>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Begin</th>
+            <th>End</th>
+            <th>Margin</th>
+            <th>Vehicle</th>
+            <th>Amount</th>
+            <th>State</th>
+            <th>Payment Confirmation</th>
+            <th>Payment Cancellation</th>
+            <th>Room Confirmation</th>
+            <th>Room Cancellation</th>
+            <th>Activity Confirmation</th>
+            <th>Activity Cancellation</th>
+            <th>Process</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="adventure: ${client.adventures}">
+            <td th:text="${adventure.id}">id</td>
+            <td th:text="${adventure.begin}">begin</td>
+            <td th:text="${adventure.end}">end</td>
+            <td th:text="${adventure.margin}">0.15</td>
+            <td th:text="${adventure.rentVehicle}">true</td>
+            <td th:text="${adventure.amount}">amount</td>
+            <td th:text="${adventure.state}">state</td>
+            <td th:text="${adventure.paymentConfirmation}">Payment
+                Confirmation
+            </td>
+            <td th:text="${adventure.paymentCancellation}">Payment
+                Cancellation
+            </td>
+            <td th:text="${adventure.roomConfirmation}">Room Confirmation</td>
+            <td th:text="${adventure.roomCancellation}">Room Cancellation</td>
+            <td th:text="${adventure.activityConfirmation}">Activity Confirmation</td>
+            <td th:text="${adventure.activityCancellation}">Activity Cancellation</td>
+            <td>
+                <form class="form-inline"
+                      th:action="@{/brokers/{brokerCode}/clients/{clientNif}/adventures/{id}/process(brokerCode=${client.brokerCode},clientNif=${client.nif},id=${adventure.id})}"
+                      method="post">
+                    <input class="btn btn-primary" type="submit" value="Submit"/>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

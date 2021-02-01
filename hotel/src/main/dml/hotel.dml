@@ -1,0 +1,85 @@
+package pt.ulisboa.tecnico.softeng.hotel.domain;
+
+enum pt.ulisboa.tecnico.softeng.hotel.domain.Room.Type as RoomType;
+
+class Hotel {
+	String code;
+	String name;
+	int counter;
+	String nif;
+	String iban;
+	long priceSingle;
+	long priceDouble;
+}
+
+relation DomainRootHasHotels {
+	.pt.ist.fenixframework.DomainRoot playsRole root {
+		multiplicity 1..1;
+	}
+	Hotel playsRole hotel {
+		multiplicity 0..*;
+	}
+}
+
+class Room {
+	String number;
+	RoomType type;
+}
+
+relation HotelHasRooms {
+	Hotel playsRole hotel {
+		multiplicity 1..1;
+	}
+	Room playsRole room {
+		multiplicity 0..*;
+	}
+}
+
+class Booking {
+	String reference;
+	String cancellation;
+	LocalDate cancellationDate;
+	LocalDate arrival;
+	LocalDate departure;
+	long price;
+	String buyerNif;
+	String buyerIban;
+	String providerNif;
+	String providerIban;
+	String paymentReference;
+	String invoiceReference;
+	boolean cancelledInvoice;
+	String cancelledPaymentReference;
+	String adventureId;
+	String bulkId;
+	DateTime time;
+}
+
+relation RoomHasBookings {
+	Room playsRole room {
+		multiplicity 1..1;
+	}
+	Booking playsRole booking {
+		multiplicity 0..*;
+	}
+}
+
+class Processor;
+
+relation HotelHasProcessor {
+	Hotel playsRole hotel {
+		multiplicity 1..1;
+	}
+	Processor playsRole processor {
+		multiplicity 1..1;
+	}
+}
+
+relation ProcessorManagesHotelBookings {
+	Processor playsRole processor {
+		multiplicity 0..1;
+	}
+	Booking playsRole booking {
+		multiplicity 0..*;
+	}
+}

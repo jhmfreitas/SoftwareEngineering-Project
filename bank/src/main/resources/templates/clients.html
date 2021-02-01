@@ -1,0 +1,77 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Clients</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet"
+	th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}" />
+<script th:src="@{/webjars/jquery/3.1.1/jquery.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}"></script>
+</head>
+<body>
+	<div class="container">
+		<h2>
+			Clients of Bank <span th:text="${bank.name}">MoneyRus</span>
+		</h2>
+		<a class="btn btn-default pull-right" th:href="@{/banks}">Banks</a>
+		<br/>
+		<h3>Create Client</h3>
+		<p class="text-danger" th:text="${error}">Error</p>
+		<form class="form-inline" th:action="@{/banks/{code}/clients(code=${bank.code})}" th:object="${client}" method="post">
+	 		<label>Name: </label> <input class="form-control" type="text" th:field="*{name}" /> 
+			<input class="btn btn-primary" type="submit" value="Submit" />
+		</form>
+		<br/>
+		<h3>Clients</h3>
+ 		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Name</th>
+ 					<th>Id</th>
+ 					<th>Accounts</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="client: ${bank.clients}">
+					<td th:text="${client.name}">Uncle Patinhas</td>
+ 					<td th:text="${client.id}">BK111234</td>
+				 	<td><a
+						th:href="@{/banks/{code}/clients/{id}/accounts(code=${bank.code},id=${client.id})}">Accounts</a></td>
+				</tr>
+			</tbody>
+		</table>
+		<br/>
+		<h3>Operations</h3>
+ 		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Time</th>
+ 					<th>Reference</th>
+ 					<th>Type</th>
+ 					<th>Iban</th>
+ 					<th>Value</th>
+					<th>Undo</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="operation: ${bank.operations}">
+					<td th:text="${#dates.format(operation.time, 'dd-MM-YYYY HH:mm:ss')}">2017/04/01</td>
+					<td th:text="${operation.reference}">BK12344567</td>
+					<td th:text="${operation.type}">DEPOSIT</td>
+					<td th:text="${operation.sourceIban}">123456</td>
+					<td th:text="${operation.value}">200</td>
+					<td th:text="${operation.transactionSource}">ACTIVITY</td>
+					<td th:text="${operation.transactionReference}">HT1234</td>
+					<td>
+						<form class="form-inline"
+							  th:action="@{/banks/{code}/undo/{reference}(code=${bank.code},reference=${operation.reference})}"
+							  method="post">
+							<input class="btn btn-primary" type="submit" value="Undo" />
+						</form>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>

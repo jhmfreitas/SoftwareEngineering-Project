@@ -1,0 +1,110 @@
+package pt.ulisboa.tecnico.softeng.bank.domain;
+
+enum pt.ulisboa.tecnico.softeng.bank.domain.Operation.Type as OperationType;
+
+class Bank {
+	String name;
+	String code;
+	int counter;
+}
+
+relation DomainRootHasBankApplication {
+	.pt.ist.fenixframework.DomainRoot playsRole root {
+		multiplicity 1..1;
+	}
+	Bank playsRole bank {
+		multiplicity 0..*;
+	}
+}
+
+class Client {
+	String name;
+	String id;
+}
+
+relation BankHasClients {
+	Bank playsRole bank {
+		multiplicity 1..1;
+	}
+	Client playsRole client {
+		multiplicity 0..*;
+	}
+}
+
+class Account {
+	String iban;
+	long balance;
+}
+
+relation BankHasAccounts {
+	Bank playsRole bank {
+		multiplicity 1..1;
+	}
+	Account playsRole account {
+		multiplicity 0..*;
+	}
+} 
+
+relation ClientHasAccounts {
+	Client playsRole client {
+		multiplicity 1..1;
+	}
+	Account playsRole account {
+		multiplicity 0..*;
+	}
+} 
+
+class Operation {
+	String reference;
+	String cancellation;
+	DateTime time;
+}
+
+class SingleOperation extends Operation {
+	long value;
+}
+
+class DepositOperation extends SingleOperation;
+
+class WithdrawOperation extends SingleOperation;
+
+class TransferOperation extends Operation {
+	String transactionSource;
+	String transactionReference;
+}
+
+relation BankHasOperation {
+	Bank playsRole bank {
+		multiplicity 1..1;
+	}
+	Operation playsRole operation {
+		multiplicity 0..*;
+	}
+}
+
+relation AccountHasSingleOperation {
+	Account playsRole account {
+		multiplicity 1..1;
+	}
+	SingleOperation playsRole singleOperation {
+		multiplicity 0..*;
+	}
+}
+
+relation TransferOperationHasDepositOperation {
+	TransferOperation playsRole transferOperationAsDeposit {
+		multiplicity 0..1;
+	}
+	DepositOperation playsRole depositOperation {
+		multiplicity 1..1;
+	}
+}
+
+relation TransferOperationHasWithdrawOperation {
+	TransferOperation playsRole transferOperationAsWithdraw {
+		multiplicity 0..1;
+	}
+	WithdrawOperation playsRole withdrawOperation {
+		multiplicity 1..1;
+	}
+}

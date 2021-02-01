@@ -1,0 +1,68 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Bulks</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet"
+          th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}"/>
+
+    <script th:src="@{/webjars/jquery/3.1.1/jquery.min.js}"></script>
+    <script th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}"></script>
+</head>
+<body>
+<div class="container">
+    <h2>
+        Welcome to details of bookings from bulk <span th:text="${bulk.number}">Number</span>
+    </h2>
+
+
+    <a class="btn btn-default pull-right" th:href="@{/brokers/{code}/bulks(code=${broker.code})}">Bulks</a>
+
+
+    <h3>Bulk Bookings</h3>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>References</th>
+            <th>Cancellation</th>
+            <th>Cancellation Date</th>
+            <th>Hotel Name</th>
+            <th>Hotel Code</th>
+            <th>Room Number</th>
+            <th>Room Book</th>
+            <th>Payment Reference</th>
+            <th>Invoice Reference</th>
+            <th>Cancel</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="booking: ${bookings}">
+
+            <td th:text="${booking.reference}">reference</td>
+            <td th:text="${booking.cancellation}">cancellation</td>
+            <td th:text="${booking.cancellationDate}">cancellation Date</td>
+            <td th:text="${booking.hotelName}">hotel name</td>
+            <td th:text="${booking.hotelCode}">hotel code</td>
+            <td th:text="${booking.roomNumber}">room number</td>
+            <td th:text="${booking.bookRoom}">book room</td>
+            <td th:text="${booking.paymentReference}">payment reference</td>
+            <td th:text="${booking.invoiceReference}">invoice reference</td>
+
+
+            <td>
+            <form
+                    th:action="@{/brokers/{code}/bulks/{bulkId}/bookings/{reference}/cancel(code=${broker.code},bulkId=${bulk.id},reference=${booking.reference})}"
+                    method="post">
+                <input class="btn btn-primary" type="submit" value="Cancel"/>
+            </form>
+            </td>
+
+        </tr>
+        </tbody>
+    </table>
+
+
+</div>
+</body>
+</html>

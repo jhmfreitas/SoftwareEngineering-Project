@@ -1,0 +1,72 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Bulks</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet"
+          th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}"/>
+
+    <script th:src="@{/webjars/jquery/3.1.1/jquery.min.js}"></script>
+    <script th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}"></script>
+</head>
+<body>
+<div class="container">
+    <h2>
+        Welcome to Broker <span th:text="${broker.name}">Name</span> Bulk Room Bookings
+    </h2>
+    <a class="btn btn-default pull-right" th:href="@{/brokers}">Brokers</a>
+    <br/>
+    <h3>Create Bulk Booking</h3>
+    <p class="text-danger" th:text="${error}">Error</p>
+    <form class="form-inline" th:action="@{/brokers/{code}/bulks(code=${broker.code})}" th:object="${bulk}"
+          method="post">
+        <label>Number: </label> <input class="form-control input-sm" type="number" min="1" max="1000"
+                                       th:field="*{number}"/>
+        <label>Arrival: </label> <input class="form-control input-sm" type="date" th:field="*{arrival}"/>
+        <label>Departure: </label> <input class="form-control input-sm" type="date" th:field="*{departure}"/>
+        <input class="btn btn-primary input-sm" type="submit" value="Submit"/>
+    </form>
+    <br/>
+    <h3>Bulk Bookings</h3>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Number</th>
+            <th>Arrival</th>
+            <th>Departure</th>
+            <th>Actual Number</th>
+            <th>Cancelled</th>
+            <th>Process</th>
+            <th>References</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="bulk: ${broker.bulks}">
+            <td th:text="${bulk.number}">number</td>
+            <td th:text="${bulk.arrival}">arrival</td>
+            <td th:text="${bulk.departure}">departure</td>
+            <td th:text="${bulk.actualNumber}">actual number</td>
+            <td th:text="${bulk.cancelled}">cancelled</td>
+
+            <td>
+                <form class="form-inline"
+                      th:action="@{/brokers/{code}/bulks/{id}/process(code=${broker.code},id=${bulk.id})}"
+                      method="post">
+                    <input class="btn btn-primary" type="submit" value="Submit"/>
+                </form>
+            </td>
+
+            <td><p th:each="reference: ${bulk.references}"><span th:text="${reference}">reference</span></p></td>
+
+            <td>
+                <a
+                    th:href="@{/brokers/{code}/bulks/{id}/bookings(code=${broker.code},id=${bulk.id})}">Details</a>
+            </td>
+
+
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

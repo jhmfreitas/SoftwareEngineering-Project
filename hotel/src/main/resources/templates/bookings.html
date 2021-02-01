@@ -1,0 +1,67 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Bookings</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet"
+	th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}" />
+<script th:src="@{/webjars/jquery/3.1.1/jquery.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}"></script>
+</head>
+<body>
+	<div class="container">
+		<h2>
+			Bookings of Room <span th:text="${room.number}">01</span> in Hotel <span th:text="${room.hotelName}">Paris</span>
+		</h2>
+		<a class="btn btn-default pull-right" th:href="@{/hotels/{number}/rooms(number=${room.hotelCode})}">Rooms</a>
+		<br/>
+		<h3>Create Booking</h3>
+		<p class="text-danger" th:text="${error}">Error</p>
+		<form class="form-inline" th:action="@{/hotels/{code}/rooms/{number}/bookings(code=${room.hotelCode},number=${room.number})}" th:object="${booking}" method="post">
+			<label>Arrival: </label> <input class="form-control input-sm" type="date" th:field="*{arrival}" /> 
+			<label>Departure: </label> <input class="form-control input-sm" type="date" th:field="*{departure}" /> 
+			<label>NIF: </label> <input class="form-control input-sm" type="text" size="9" th:field="*{buyerNif}" /> 
+			<label>IBAN: </label> <input class="form-control input-sm" type="text" size="20" th:field="*{buyerIban}" /> 
+			<input class="btn btn-primary" type="submit" value="Submit" />
+		</form>
+		<br/>
+		<h3>List of Bookings</h3>
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Arrival</th>
+ 					<th>Departure</th>
+					<th>Reference</th>
+ 					<th>NIF</th>
+					<th>IBAN</th>
+					<th>Price</th>
+					<th>Payment Reference</th>
+					<th>Adventure ID</th>
+					<th>Cancellation</th>
+					<th>Cancellation Date</th>					
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="booking : ${room.bookings}">
+					<td th:text="${booking.arrival}">12/12/2016</td>
+					<td th:text="${booking.departure}">21/12/2016</td>
+					<td th:text="${booking.reference}">xpto3456</td>
+					<td th:text="${booking.buyerNif}">123456779</td>
+					<td th:text="${booking.buyerIban}">CGD 1235 7487439 8498</td>
+					<td th:text="${booking.price}">49.99</td>
+					<td th:text="${booking.paymentReference}">49.99</td>
+					<td th:text="${booking.adventureId}">49.99</td>
+					<td>
+                		<form class="form-inline"
+                      		th:action="@{/hotels/{codeHotel}/rooms/{roomNumber}/bookings/{reference}/process(codeHotel=${room.hotelCode},roomNumber=${room.number},reference=${booking.reference})}"
+                      		method="post">
+                    		<input class="btn btn-primary" type="submit" value="Cancel"/>
+                		</form>
+            		</td>
+					<td th:text="${booking.cancellationDate}">07/12/2016</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>

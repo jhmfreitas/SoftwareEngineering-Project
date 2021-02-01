@@ -1,0 +1,52 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Item Types</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet"
+          th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}" />
+    <script th:src="@{/webjars/jquery/3.1.1/jquery.min.js}"></script>
+    <script th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}"></script>
+</head>
+<body>
+<div class="container">
+    <h2>
+        Welcome to the Rent-A-Cars Manager
+    </h2>
+    <a class="btn btn-default pull-right" th:href="@{/}">Rent-A-Cars</a>
+    <br/>
+    <h3>Create Rent-A-Car</h3>
+    <p class="text-danger" th:text="${error}">Error</p>
+    <form class="form-inline" th:action="@{/rentacars}" th:object="${rentacar}" method="post">
+        <label>Name: </label> <input class="form-control input-sm" type="text" th:field="*{name}" />
+        <label>NIF: </label> <input class="form-control input-sm" type="text" size="9" th:field="*{nif}" />
+        <label>IBAN: </label> <input class="form-control input-sm" type="text" th:field="*{iban}" />
+        <input class="btn btn-primary btn-sm" type="submit" value="Submit" />
+    </form>
+    <br/>
+    <h3>List of Rent-A-Cars</h3>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>NIF</th>
+            <th>IBAN</th>
+            <th>#Vehicles</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="rentacar: ${rentacars}">
+            <td th:text="${rentacar.name}">RentACar</td>
+            <td th:text="${rentacar.nif}">1234556789</td>
+            <td th:text="${rentacar.iban}">PT501020301</td>
+            <td>
+                <a th:href="@{/rentacars/rentacar/{code}/vehicles(code=${rentacar.code})}">
+                    <span th:text="${rentacar.numVehicles}">Vehicles</span>
+                </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
