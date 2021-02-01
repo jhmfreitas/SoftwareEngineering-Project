@@ -1,0 +1,34 @@
+language: java
+jdk: oraclejdk8
+
+cache:
+  directories:
+  - $HOME/.m2
+
+services:
+  - mysql
+
+before_install:
+  # Creating databases for modules
+  - mysql -e 'CREATE DATABASE advactivity;'
+  - mysql -e 'CREATE DATABASE advbank;'
+  - mysql -e 'CREATE DATABASE advbroker;'
+  - mysql -e 'CREATE DATABASE advhotel;'
+  - mysql -e 'CREATE DATABASE advcar;'
+  - mysql -e 'CREATE DATABASE advtax;'
+
+
+before_script:
+  # Creating fenix-framework.properties file for each module based on the correspondent fenix-framework.properties.example
+  - for module in activity bank broker car hotel tax; do cp $module/src/main/resources/fenix-framework.properties{.example,} ; done
+
+script:
+  - mvn clean package -B
+
+env:
+  global:
+    # You can fetch this at https://codecov.io/gh/tecnico-softeng/es18XX-YY-project/settings
+    - CODECOV_TOKEN=7955c0a7-7b03-4c5f-94e0-8a047f7d0372
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)

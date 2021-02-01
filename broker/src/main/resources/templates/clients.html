@@ -1,0 +1,62 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Adventures</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+    <link rel="stylesheet"
+          th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}"/>
+
+    <script th:src="@{/webjars/jquery/3.1.1/jquery.min.js}"></script>
+    <script th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}"></script>
+</head>
+<body>
+<div class="container">
+    <h2>
+        Welcome to Broker <span th:text="${broker.name}">Rage in the
+				Snow</span> Clients
+    </h2>
+    <a class="btn btn-default pull-right" th:href="@{/brokers}">Brokers</a>
+    <br/>
+    <h3>Create Client</h3>
+    <p class="text-danger" th:text="${error}">Error</p>
+    <form class="form-inline"
+          th:action="@{/brokers/{code}/clients(code=${broker.code})}"
+          th:object="${client}" method="post">
+        <label>NIF: </label> <input class="form-control input-sm" type="text"
+                                    size="9" th:field="*{nif}"/> <label>IBAN: </label> <input
+            class="form-control input-sm" type="text" size="20"
+            th:field="*{iban}"/> <label>Age: </label> <input
+            class="form-control input-sm" type="number" min="1" max="120"
+            th:field="*{age}"/> <label>Driving License: </label> <input
+            class="form-control input-sm" type="text"
+            th:field="*{drivingLicense}"/> <input
+            class="btn btn-primary input-sm" type="submit" value="Submit"/>
+    </form>
+    <br/>
+    <h3>Clients</h3>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>NIF</th>
+            <th>IBAN</th>
+            <th>Age</th>
+            <th>Driving License</th>
+            <th>Link</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="client: ${broker.clients}">
+            <td th:text="${client.nif}">1234567789</td>
+            <td th:text="${client.iban}">IBAN 7338498 785893</td>
+            <td th:text="${client.age}">35</td>
+            <td th:text="${client.drivingLicense}">PT678988890</td>
+            <td>
+                <a th:href="@{/brokers/{code}/clients/{nif}/adventures(code=${broker.code}, nif=${client.nif})}">Link</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

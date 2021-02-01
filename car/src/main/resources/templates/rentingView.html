@@ -1,0 +1,67 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Bookings</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet"
+          th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}" />
+    <script th:src="@{/webjars/jquery/3.1.1/jquery.min.js}"></script>
+    <script th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}"></script>
+</head>
+<body>
+<div class="container">
+    <h2>
+        Renting <span th:text="${renting.reference}">Reference</span> of Vehicle (<span th:text="${vehicle.type}">Car</span>): <span th:text="${vehicle.plate}">01</span>
+    </h2>
+    <a class="btn btn-default pull-right" th:href="@{/rentacars/rentacar/{code}/vehicles/vehicle/{plate}/rentings(code=${rentacar.code},plate=${vehicle.plate})}">Rentings</a>
+    <br/>
+    <br/>
+    <h3>Rentings</h3>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Reference</th>
+            <th>Plate</th>
+            <th>Driving License</th>
+            <th>Rent-A-Car</th>
+            <th>begin</th>
+            <th>end</th>
+            <th>Payment Reference</th>
+            <th>Invoice Reference</th>
+            <th>Cancellation Reference</th>
+            <th>Price</th>
+        </tr>
+        </thead>
+        <tbody>
+            <td th:text="${renting.reference}">XPTO</td>
+            <td th:text="${renting.plate}">XPTO</td>
+            <td th:text="${renting.drivingLicense}">XPTO</td>
+            <td th:text="${renting.rentACarCode}">XPTO</td>
+            <td th:text="${renting.begin}">XPTO</td>
+            <td th:text="${renting.end}">XPTO</td>
+            <td th:text="${renting.paymentReference}">XPTO</td>
+            <td th:text="${renting.invoiceReference}">XPTO</td>
+            <td th:text="${renting.cancellationReference}">XPTO</td>
+            <td th:text="${renting.price}">XPTO</td>
+        </tbody>
+    </table>
+
+    <br/>
+
+    <p class="text-danger" th:text="${error}">Error</p>
+    <h3>Cancel</h3>
+    <form class="form-inline" th:action="@{/rentacars/rentacar/{code}/vehicles/vehicle/{plate}/rentings/{reference}/cancel(code=${rentacar.code},plate=${vehicle.plate},reference=${renting.reference})}" method="post">
+        Cancel Renting? <input class="btn btn-primary" type="submit" value="Submit" />
+    </form>
+    <br/>
+    <h3>Checkout</h3>
+    <p class="text-success" th:text="${notification}">Notification</p>
+    <form class="form-inline" th:action="@{/rentacars/rentacar/{code}/vehicles/vehicle/{plate}/rentings/{reference}/checkout(code=${rentacar.code},plate=${vehicle.plate},reference=${renting.reference})}" th:object="${renting}" method="post">
+        Checking out? <label>Kilometers: </label> <input class="form-control" type="number" th:field="*{kilometers}" />
+        <input class="btn btn-primary" type="submit" value="Submit" />
+    </form>
+    <br/>
+
+</div>
+</body>
+</html>

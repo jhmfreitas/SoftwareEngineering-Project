@@ -1,0 +1,50 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Brokers</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet"
+          th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}"/>
+    <script th:src="@{/webjars/jquery/3.1.1/jquery.min.js}"></script>
+    <script th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}"></script>
+</head>
+<body>
+<div class="container">
+    <h2>
+        Welcome to Brokers' Manager
+    </h2>
+    <br/>
+    <h3>Create Broker</h3>
+    <p class="text-danger" th:text="${error}">Error</p>
+    <form class="form-inline" th:action="@{/brokers}" th:object="${broker}" method="post">
+        <label>Name: </label> <input class="form-control input-sm" type="text" th:field="*{name}"/>
+        <label>Code: </label> <input class="form-control input-sm" type="text" size="7" th:field="*{code}"/>
+        <label>Nif: </label> <input class="form-control input-sm" type="text" size="9" th:field="*{nif}"/>
+        <label>IBAN: </label> <input class="form-control input-sm" type="text" size="12" th:field="*{iban}"/>
+        <input class="btn btn-primary input-sm" type="submit" value="Submit"/>
+    </form>
+    <br/>
+    <h3>List of Brokers</h3>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Code</th>
+            <th>Clients</th>
+            <th>Bulks</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="broker: ${brokers}">
+            <td th:text="${broker.name}">Name</td>
+            <td th:text="${broker.code}">Code</td>
+            <td><a
+                    th:href="@{/brokers/{code}/clients(code=${broker.code})}">Link</a></td>
+            <td><a
+                    th:href="@{/brokers/{code}/bulks(code=${broker.code})}">Link</a></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

@@ -1,0 +1,5 @@
+BK12,Broker
+BK12,Client
+BK12,Hotel
+BK12,Rent a Car
+BK12,Activity Provider

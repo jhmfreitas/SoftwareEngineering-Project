@@ -1,0 +1,52 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Rooms</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<link rel="stylesheet"
+	th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}" />
+
+<script th:src="@{/webjars/jquery/3.1.1/jquery.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}"></script>
+</head>
+<body>
+	<div class="container">
+		<h2>
+			Rooms of Hotel <span th:text="${hotel.name}">Name</span>
+		</h2>
+		<a class="btn btn-default pull-right" th:href="@{/hotels}">Hotels</a>
+		<br/>
+		<h3>Create Room</h3>
+		<p class="text-danger" th:text="${error}">Error</p>
+		<form class="form-inline" th:action="@{/hotels/{code}/rooms(code=${hotel.code})}" th:object="${room}" method="post">
+	 		<label>Number: </label> <input class="form-control" type="text" th:field="*{number}" /> 
+			<label>Type: </label> 
+				<select class="form-control" th:field="*{type}" >
+       				<option th:each="type : ${T(pt.ulisboa.tecnico.softeng.hotel.domain.Room.Type).values()}" th:value="${type}" th:text="${type}">
+   					</option>
+				</select>
+			<input class="btn btn-primary" type="submit" value="Submit" />
+		</form>
+		<br/>
+		<h3>Rooms</h3>
+ 		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Number</th>
+ 					<th>Type</th>
+ 					<th>Bookings</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="room: ${hotel.rooms}">
+					<td th:text="${room.number}">012</td>
+ 					<td th:text="${room.type}">SINGLE</td>
+				 	<td><a
+						th:href="@{/hotels/{code}/rooms/{number}/bookings(code=${hotel.code},number=${room.number})}">Bookings</a></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>

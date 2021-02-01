@@ -1,0 +1,67 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Offers</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet"
+          th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}"/>
+    <script th:src="@{/webjars/jquery/3.1.1/jquery.min.js}"></script>
+    <script th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}"></script>
+</head>
+<body>
+<div class="container">
+    <h2>
+        Bookings of Offer <span th:text="${offer.name}">Tracking</span> from
+        <span th:text="${offer.begin}">12/12/2017</span> to <span
+            th:text="${offer.end}">15/12/2107</span> and with <span
+            th:text="${offer.getAvailable()}">20</span> free places
+    </h2>
+    <a class="btn btn-default pull-right"
+       th:href="@{/providers/{codeProvider}/activities/{codeActivity}/offers(codeProvider=${offer.codeProvider}, codeActivity=${offer.codeActivity})}">Offers</a>
+    <br/>
+    <h3>Reserve</h3>
+    <p class="text-danger" th:text="${error}">Error</p>
+    <form class="form-inline"
+          th:action="@{/providers/{codeProvider}/activities/{codeActivity}/offers/{externalId}/bookings(codeProvider=${offer.codeProvider},codeActivity=${offer.codeActivity},externalId=${offer.externalId})}"
+          th:object="${booking}" method="post">
+        <label>NIF: </label> <input class="form-control input-sm" type="text"
+                                    size="9" th:field="*{nif}"/> <label>IBAN: </label> <input
+            class="form-control input-sm" type="text" size="20"
+            th:field="*{iban}"/> 
+            <label>Age: </label> <input class="form-control input-sm" type="number" min="18" max="100" th:field="*{age}" placeholder="Over 18"/>
+            <input class="btn btn-primary btn-sm"
+                                              type="submit" value="Submit"/>
+    </form>
+    <br/>
+    <h3>Bookings</h3>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Reference</th>
+            <th>NIF</th>
+            <th>IBAN</th>
+            <th>Age</th>
+            <th>Cancel</th>
+            <th>Cancellation Date</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="booking: ${offer.reservations}">
+            <td th:text="${booking.reference}">12321351</td>
+            <td th:text="${booking.nif}">132452623</td>
+            <td th:text="${booking.iban}">PT 89265897 8745982</td>
+            <td th:text="${booking.age}">23</td>
+            <td>
+                <form class="form-inline"
+                      th:action="@{/providers/{codeProvider}/activities/{codeActivity}/offers/{externalId}/bookings/{reference}/process(codeProvider=${offer.codeProvider},codeActivity=${offer.codeActivity},externalId=${offer.externalId},reference=${booking.reference})}"
+                      method="post">
+                    <input class="btn btn-primary" type="submit" value="Cancel"/>
+                </form>
+            </td>
+            <td th:text="${booking.cancellationDate}">23</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
