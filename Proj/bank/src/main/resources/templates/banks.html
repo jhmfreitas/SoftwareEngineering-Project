@@ -1,0 +1,45 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Banks</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet"
+	th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}" />
+<script th:src="@{/webjars/jquery/3.1.1/jquery.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}"></script>
+</head>
+<body>
+	<div class="container">
+		<h2>
+			Welcome to Banks' Manager
+		</h2>
+		<br/>
+		<h3>Create Bank</h3>
+		<p class="text-danger" th:text="${error}">This is not good</p>
+		<form class="form-inline" th:action="@{/banks}" th:object="${bank}" method="post">
+			<label>Name: </label> <input class="form-control" type="text" th:field="*{name}" /> 
+			<label>Code: </label> <input class="form-control" type="text" th:field="*{code}" /> 
+			<input class="btn btn-primary" type="submit" value="Submit" />
+		</form>
+		<br/>
+		<h3>List of Banks</h3>
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Code</th>
+ 					<th>Clients</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="bank: ${banks}">
+					<td th:text="${bank.name}">Bank of Money</td>
+					<td th:text="${bank.code}">BK111111</td>
+				 	<td><a
+						th:href="@{/banks/{code}/clients(code=${bank.code})}">Clients</a></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Hotels</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet"
+	th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}" />
+<script th:src="@{/webjars/jquery/3.1.1/jquery.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}"></script>
+</head>
+<body>
+	<div class="container">
+		<h2>
+			Welcome to Hotels' Manager
+		</h2>
+		<br/>
+		<h3>Create Hotel</h3>
+		<p class="text-danger" th:text="${error}">Error</p>
+		<form class="form-inline" th:action="@{/hotels}" th:object="${hotel}" method="post">
+			<label>Name: </label> <input class="form-control input-sm" type="text" th:field="*{name}" /> 
+			<label>Code: </label> <input class="form-control input-sm" type="text" size="7" th:field="*{code}" /> 
+			<label>NIF: </label> <input class="form-control input-sm" type="text" size="9"  th:field="*{nif}" /> 
+			<label>IBAN: </label> <input class="form-control input-sm" type="text" size="20" th:field="*{iban}" /> 
+			<label>Single: </label> <input class="form-control input-sm" type="number" step="0.01" min="0.01" max="1000" th:field="*{priceSingle}" /> 
+			<label>Double: </label> <input class="form-control input-sm" type="number" step="0.01" min="0.01" max="1000" th:field="*{priceDouble}" /> 
+			<input class="btn btn-primary btn-sm" type="submit" value="Submit" />
+		</form>
+		<br/>
+		<h3>List of Hotels</h3>
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Code</th>
+ 					<th>Rooms</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="hotel: ${hotels}">
+					<td th:text="${hotel.name}">Name</td>
+					<td th:text="${hotel.code}">Code</td>
+				 	<td><a
+						th:href="@{/hotels/{code}/rooms(code=${hotel.code})}">Rooms</a></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>
